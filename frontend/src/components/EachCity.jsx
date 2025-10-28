@@ -7,7 +7,7 @@ function EachCity() {
      
      
      console.log(city)
-   function getEachCity(){
+     function getEachCity(){
          async function fn(){
               const data = await fetch(`http://localhost:3000/hotel/${city}`)
               const response = await data.json()

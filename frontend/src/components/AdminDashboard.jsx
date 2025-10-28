@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [admins , setAdmins] = useState([])
+  
   const [logOut , setLogOut] = useState(!!Cookies.get("adminToken"))
   const [hotelDetails , setHotelDetails] = useState([])
   const navigate = useNavigate()
@@ -42,21 +43,14 @@ const AdminDashboard = () => {
      }
      useEffect(fn , [])
 
+    
+     
+
       const adminId = Cookies.get("adminId")
       const findAdmin = admins.find((admin => admin._id === adminId))
-
-     console.log(adminId)
-
-    //  function fun(){
-    //    async function fn(){
-    //       const response = await fetch("http://localhost:3000/hotel/adminrooms")
-    //       const data = await response.json()
-    //       console.log(data.admin)
-    //    }
-    //     fn()
-    //  }
-
-    //  useEffect(fun,[])
+      // console.log(findAdmin)
+     console.log("Adminid: " ,adminId)
+    
 
   return (
     <div className="flex min-h-screen">
@@ -124,7 +118,7 @@ const AdminDashboard = () => {
             </div>
           </div>
         )}
-
+        
         {activeTab === "users" && (
           <div>
             <h1 className="text-3xl font-bold mb-6">Users</h1>
@@ -138,34 +132,43 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                
-            {admins.map((each , index)=>(
-            <tr key={each._id}>
-              <td className="py-2 px-4">{index + 1}</td>
-              <td className="py-2 px-4">{each.user}</td>
-              <td className="py-2 px-4">{each.email}</td>
-              <td className="py-2 px-4">admin</td>
+               
+             <tr>
+             
+              <td className="py-2 px-4">{count}</td>
+              <td className="py-2 px-4">{name}</td>
+              <td className="py-2 px-4">{email}</td>
+              <td className="py-2 px-4">User</td>
             </tr>
-          ))}              
+                       
               </tbody>
             </table>
           </div>
         )}
-        
+       
         {activeTab === "hotels" && (
           <div>
+             <div className="flex flex-row justify-end">
+        <button 
+          onClick={() => navigate('/createhotel')}
+          className="bg-blue-600 p-2 rounded-lg text-white hover:bg-blue-700 transition-colors"
+        >
+          + Add new hotel
+        </button>
+        </div>
             <h1 className="text-3xl font-bold mb-6">Hotels</h1>
             {/* <p>Hotel management section coming soon...</p> */}
             {findAdmin && findAdmin.hotel.length > 0 ? (
            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> 
              {findAdmin.hotel.map((each)=>(
               
-                <div key={each._id}>
-                  <img src={each.image} className='h-[180px] w-[250px] rounded-sm'/>
-                  <h1 className='font-bold'>{each.name}</h1>
-                  <p className='line-clamp-1'>{each.des}</p>
-                  <h1 className="font-semibold">{each.city}</h1>
-                 
+                <div key={each._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                  <img src={each.image} className='h-[180px] w-full object-cover'/>
+                  <div className="p-4">
+                    <h1 className='font-bold text-lg'>{each.name}</h1>
+                    <p className='line-clamp-1 text-gray-600 my-2'>{each.des}</p>
+                    <h1 className="font-semibold text-blue-600">{each.city}</h1>
+                  </div>
                 </div>
              
              ))}

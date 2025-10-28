@@ -72,3 +72,14 @@ export const getRoomsByHotel = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const deleteRooms = async(req , res)=>{
+   try {
+      const deleteRooms = await RoomModel.deleteMany({})
+      res.status(200).json({success : true , message : "All rooms deleted successfully"})
+
+   } catch (error) {
+      console.log(error)
+      res.status(500).json({success : false , message : "Internal server error"})
+   }
+}

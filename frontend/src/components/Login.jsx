@@ -53,6 +53,10 @@ function Login(props) {
         Cookies.set("email" , dataa.getEmail.email , {expires : 1})
         console.log("email: ", dataa.getEmail.email)
      }
+     if(dataa.getEmail?.firstName){
+        Cookies.set("name", dataa.getEmail.firstName , {expires:1})
+        console.log("name: " , dataa.getEmail.firstName)
+     }
       if(response.ok){
         alert("Login successfull!")
         // Cookies.set("details" , dataa.getEmail._id , {expires : 1})

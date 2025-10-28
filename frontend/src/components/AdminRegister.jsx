@@ -42,12 +42,16 @@ function AdminRegister() {
              }
              const response = await fetch("http://localhost:3000/adminroute/register" , options)
              const dataa = await response.json()
-             console.log("response : " , dataa)
+             console.log(dataa)
 
              if(response.ok){
                 alert("Registration successfull")
+                navigate('/admindashboard')
              }
-
+             else{
+                alert(dataa.message)
+             }
+            
           } 
           
           catch (error) {

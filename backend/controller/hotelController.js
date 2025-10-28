@@ -105,9 +105,14 @@ export const getHotelById = async (req, res) => {
 // Update a hotel by ID
 export const updateHotel = async (req, res) => {
   try {
+    await cloudinaryconnection()
+    
     const { id } = req.params;  // hotel id from URL
-    const { name, des , city} = req.body;
-    const image = req.file
+    const { name, des , city , address , price } = req.body;
+    
+    // Get files from req.files object
+    const imageFile = req.files["image"] ? req.files["image"][0] : null;
+    const additionalImages = req.files["images"] || [];
 
     // Find the hotel and check if it exists
     const hotel = await Hotelmodel.findById(id);
@@ -116,22 +121,50 @@ export const updateHotel = async (req, res) => {
     }
 
     // Update fields if provided
-    hotel.name = name || hotel.name;
-    hotel.image = image || hotel.image;
-    hotel.des = des || hotel.des;
-    hotel.city = city|| hotel.city;
+    if (name) hotel.name = name ;
+    if (des) hotel.des = des;
+    if (city) hotel.city = city;
+    if (address) hotel.address = address
+    if (price) hotel.price = price 
 
+    // Handle main image upload
+    if (imageFile) {
+      const result = await cloudinary.uploader.upload(imageFile.path, {
+        resource_type: "image",
+      });
+      hotel.image = result.secure_url;
+    }
+
+    // Handle additional images upload
+    if (additionalImages && additionalImages.length > 0) {
+      const imageUrls = [];
+      for (const img of additionalImages) {
+        const result = await cloudinary.uploader.upload(img.path, {
+          resource_type: "image", 
+        });
+        imageUrls.push(result.secure_url);
+      }
+      
+      // Append new images to existing ones
+      if (hotel.images && hotel.images.length > 0) {
+        hotel.images = [...hotel.images, ...imageUrls];
+      } else {
+        hotel.images = imageUrls;
+      }
+    }
+    
     const updatedHotel = await hotel.save();
 
     res.status(200).json({
       message: "Hotel updated successfully",
-      hotel: updatedHotel
+      hotel: updatedHotel,
     });
   } catch (error) {
     console.error("Error updating hotel:", error);
     res.status(500).json({ err: "Internal server error" });
   }
 };
+
 
 export const deleteHotels = async(req , res)=>{
   try {
@@ -169,4 +202,21 @@ export const deleteOneHotel = async(req , res)=>{
     return res.status(400).json({success : false , message : "hotels deletetion failed"})
   }
 }
+
+export const getHotelsByAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const adminId = id;
+    
+    const hotels = await Hotelmodel.find({ admin: adminId }).populate("admin", "user email");
+    
+    res.status(200).json({
+      message: "Fetched hotels successfully",
+      hotels
+    });
+  } catch (error) {
+    console.error("Error fetching hotels:", error);
+    res.status(500).json({ err: "Internal server error" });
+  }
+};
 

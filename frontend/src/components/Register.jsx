@@ -51,10 +51,11 @@ function Register() {
     }
      const response = await fetch("http://localhost:3000/hotel/register" , options)
      const dataa = await response.json()
-     console.log("Response : ",dataa)
+     console.log(dataa)
      
-    
-     if(response.ok && dataa.success){
+     
+
+     if(response.ok){
        
         // Cookies.set("userId" , dataa.addUser._id)
         // Cookies.set("email" , dataa.addUser.email)
@@ -63,7 +64,7 @@ function Register() {
         navigate('/')
     }
     else{
-        alert(dataa.message || "Registration failed")
+        alert(dataa.error)
     }
      }
      catch(e){

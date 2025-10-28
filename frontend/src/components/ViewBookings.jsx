@@ -66,7 +66,7 @@ const ViewBookings = () => {
             <img
               src={each.hotelId[0]?.image}
               alt="Hotel"
-              className="w-full h-40 object-cover rounded-xl mb-4"
+              className="w-full h-50 object-cover rounded-xl mb-4"
             />
             <h2 className="text-xl font-semibold mb-2">
               {each.hotelId[0]?.name}
@@ -80,7 +80,7 @@ const ViewBookings = () => {
             <p className="text-gray-600 text-sm mb-2">
               <strong>Guests:</strong> {each.guests}
             </p>
-            <p
+            {/* <p
               className={`inline-block px-3 py-1 rounded-lg text-sm font-medium ${
                 each.status === "Confirmed"
                   ? "bg-green-100 text-green-700"
@@ -90,7 +90,7 @@ const ViewBookings = () => {
               }`}
             >
               {each.status}
-            </p>
+            </p> */}
           </div>
           
         ))}

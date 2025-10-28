@@ -97,12 +97,7 @@ function Rooms() {
                     alt={each.name}
                     className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300' 
                   />
-                  <div className='absolute top-4 right-4 bg-white rounded-full px-3 py-1 flex items-center gap-1 shadow-md'>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 text-yellow-400">
-                      <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
-                    </svg>
-                    <span className='text-sm font-semibold text-gray-700'>{each.rating}</span>
-                  </div>
+                 
                 </div>
                 
                 <div className='p-5 flex-1 flex flex-col'>

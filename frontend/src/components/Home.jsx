@@ -20,10 +20,10 @@ const Home = () =>{
     }
   return(
     
-  <div className="font-sans bg-gray-50 min-h-screen relative">
+  <div className="font-pt-sans bg-gray-50 min-h-screen relative">
     <Navbar registerFun={registerFun} loginFun={loginFun}/>
     <div>
-      <div className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br via-white to-blue-200 pt-32 animate-fadeIn">
+      <div className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br  to-blue-200 pt-32 animate-fadeIn">
     <div className="absolute inset-0 bg-[url('https://i.pinimg.com/1200x/26/fe/d9/26fed92debb8545b462cc4475e7c98c7.jpg')] bg-cover bg-center opacity-40"></div>
     <div className="relative z-10 text-center max-w-2xl mx-auto">
       <h1 className="text-5xl md:text-6xl font-extrabold text-gray-800 mb-6 drop-shadow animate-slideInDown">
@@ -43,7 +43,7 @@ const Home = () =>{
         {login && <Login setLogin={setLogin}/>}
       </div>
      
-      <div id="about" className="py-20 bg-white animate-fadeInUp">
+      {/* <div id="about" className="py-20 bg-white animate-fadeInUp">
     <div className="max-w-4xl mx-auto px-6 text-center animate-fadeInUp">
       <h2 className="text-3xl font-bold text-gray-800 mb-4">About BookYourStay</h2>
       <p className="text-gray-600 text-lg">
@@ -52,7 +52,24 @@ const Home = () =>{
         and 24/7 customer support to make your stay unforgettable.
       </p>
     </div>
-  </div>
+  </div> */}
+      <div className="flex flex-col md:flex-row items-center justify-center gap-10 max-md:px-4 animate-fadeUp mt-8" id="about">
+        <div className="relative shadow-2xl shadow-indigo-600/40 rounded-2xl overflow-hidden shrink-0">
+            <img className="max-w-md w-full object-cover rounded-2xl"
+                src="https://i.pinimg.com/736x/42/fc/9a/42fc9a8383520d0c0ef509074c493623.jpg"
+                alt="image" />
+            
+        </div>
+        <div className="text-sm text-slate-600 max-w-lg">
+            <h1 className="text-xl uppercase font-semibold text-slate-700">What we do?</h1>
+            <div className="w-24 h-[3px] rounded-full bg-gradient-to-r from-indigo-600 to-[#DDD9FF]"></div>
+            <p className="mt-8 text-md"><span className="font-bold text-md">BookYourStay</span> is an innovative hotel booking platform designed to make finding and reserving accommodation simple, fast, and reliable </p>
+            <p className="mt-4">With an easy-to-use interface, real-time availability, and secure booking options, BookYourStay ensures a smooth experience for every user. Hotel owners can manage rooms, pricing, and availability effortlessly through the admin dashboard, while guests can explore detailed hotel descriptions, images, and reviews before booking.</p>
+            <p className="mt-4">Whether you’re traveling for business or leisure, BookYourStay makes your hotel search smarter, your booking quicker, and your stay more comfortable.</p>
+            
+        </div>
+    </div>
+
       <HomeRooms/>
       </div>
       

@@ -15,6 +15,8 @@ import Payment from "./components/Payment"
 import ViewBookings from "./components/ViewBookings"
 import { useState } from "react"
 import AdminDashboard from "./components/AdminDashboard"
+import EachCity from "./components/EachCity"
+import Sample from "./components/sample"
 
 function App(){
   const [totalPrice , setTotalPrice] = useState(0)
@@ -27,12 +29,13 @@ function App(){
    <BrowserRouter>
    
     <Routes>
+      <Route path='/sample' element={<Sample></Sample>}/>
     <Route path='/admindashboard' element={<AdminDashboard></AdminDashboard>}/>
      <Route path='/login' element={<Login/>}/>
      <Route path='/' element={<Home/>}/>
      <Route path='/rooms' element={<Rooms/>}/>
      <Route path='/bookings' element={<Bookings/>}/>
-     {/* <Route path='/:city' element={<EachCity/>}/> */}
+     <Route path='/:city' element={<EachCity/>}/>
      {/* <Route path='/:id' element={<EachHotel/>}/> */}
      <Route path='/adminregister' element={<AdminRegister/>}/>
      <Route path='/adminlogin' element={<AdminLogin/>}/>
