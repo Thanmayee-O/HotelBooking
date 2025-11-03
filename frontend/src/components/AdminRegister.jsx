@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Alert from '../components/Alert'
 
 function AdminRegister() {
+    const port = "http://localhost:3000"
     const [username,  setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -19,7 +20,7 @@ function AdminRegister() {
         setPassword(e.target.value)
     }
     const goToHome =  () => {
-        navigate('/')
+        navigate('/admindashboard')
     }
     const onNavigateToLogin = () => {
       navigate('/adminlogin')
@@ -40,7 +41,7 @@ function AdminRegister() {
                  },
                  body : JSON.stringify(data)
              }
-             const response = await fetch("http://localhost:3000/adminroute/register" , options)
+             const response = await fetch(`${port}/adminroute/register` , options)
              const dataa = await response.json()
              console.log(dataa)
 

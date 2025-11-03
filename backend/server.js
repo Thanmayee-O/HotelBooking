@@ -12,7 +12,7 @@ import adminRoute from './route/adminroute.js'
 import cloudinaryconnection from './cloudinary.js'
 import bookingroute from './route/bookingroute.js'
 import paymentRoute from './route/paymentroute.js'
-import viewbookings from './route/viewbookings.js'
+import viewbookings from './route/viewbookingsroute.js'
 import roomsroute from './route/roomsroute.js'
 
 const app = express()

@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-
+import { BeatLoader } from 'react-spinners';
 
 
 
@@ -38,13 +38,15 @@ const settings = {
 
 
 function HotelDetails(props) {
+     const port = "http://localhost:3000"
     const {totalPrice, setTotalPrice} = props
     const [details , setDetails] = useState({})
     const [reviewList , setReviewList] = useState([])
     const [review , setReview] = useState('')
     const [guests , setGuests] = useState('')
-    
+    const [loading , setLoading] = useState(true)
     const [rating, setRating] = useState('')
+    const [errorMsg , setErrorMsg] = useState('')
 
     const {id} = useParams()
     const navigate = useNavigate()
@@ -82,9 +84,10 @@ function HotelDetails(props) {
     }
      
        
-        function func(){
+      function func(){
           async function hoteldetails(){
-            const response = await fetch(`http://localhost:3000/hotel/review/${id}`)
+            setLoading(true)
+            const response = await fetch(`${port}/hotel/review/${id}`)
             const jsonData = await response.json()
             console.log(jsonData.reviews)
             setReviewList(jsonData.reviews)
@@ -110,7 +113,7 @@ function HotelDetails(props) {
       // setReviewList(prev => [...prev , newReview])
       // setReview('')
 
-        const response = await fetch("http://localhost:3000/hotel/review" , {
+        const response = await fetch(`${port}/hotel/review` , {
           method : "POST",
           headers : {
             "Content-Type" : "application/json",
@@ -139,7 +142,7 @@ function HotelDetails(props) {
 
       function fun(){
             async function hoteldetails(){
-            const response = await fetch(`http://localhost:3000/hotel/rooms/${id}`)
+            const response = await fetch(`${port}/hotel/rooms/${id}`)
             const jsonData = await response.json()
             console.log(jsonData.hotel.images)
             setDetails(jsonData.hotel)
@@ -161,7 +164,7 @@ function HotelDetails(props) {
           //       alert("Please login first");
           //       return;
           //   } 
-         const response = await fetch('http://localhost:3000/hotel/userbooking' , {
+         const response = await fetch(`${port}/hotel/userbooking`, {
             method : "POST",  
             headers : {
               "Content-Type" : "application/json",
@@ -194,7 +197,9 @@ function HotelDetails(props) {
           //     alert("Please select dates and number of guests first.");
           //     return 
           //   }
-            
+            if(!data.success){
+         setErrorMsg(data.message)
+      }
       
           
             // Navigate only if booking ID is valid
@@ -202,10 +207,12 @@ function HotelDetails(props) {
          navigate(`/payment/${data.booking._id}`)
       }
 
+      
 
     
   return (
     <>
+        
     <div className='flex flex-row text-blue-700 ml-3 bg-gray-50 pt-5 pb-1'>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className='h-7 w-7 pt-1 pr-1 pl-2' fill="blue">
       <path d="M73.4 297.4C60.9 309.9 60.9 330.2 73.4 342.7L233.4 502.7C245.9 515.2 266.2 515.2 278.7 502.7C291.2 490.2 291.2 469.9 278.7 457.4L173.3 352L544 352C561.7 352 576 337.7 576 320C576 302.3 561.7 288 544 288L173.3 288L278.7 182.6C291.2 170.1 291.2 149.8 278.7 137.3C266.2 124.8 245.9 124.8 233.4 137.3L73.4 297.3z"/></svg>
@@ -345,8 +352,8 @@ function HotelDetails(props) {
                {/* Price Header */}
                <div className='mb-6 pb-6 border-b border-gray-200'>
                  <div className='flex items-baseline gap-2 mb-3'>
-                   <span className='text-4xl font-bold text-gray-900'>${details.price}</span>
-                   <span className='text-gray-500'>/ night</span>
+                   <span className='text-4xl font-bold text-gray-900'>₹{details.price}</span>
+                   <span className='text-gray-500'>/ perday</span>
                  </div>
                  {totalPrice > 0 && (
                    <div className='p-3 bg-blue-50 rounded-lg border border-blue-100'>
@@ -400,14 +407,16 @@ function HotelDetails(props) {
                      className='w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700'
                    />
                  </div>
-                 
+                 {errorMsg ? <p className='text-red-500'>*{errorMsg}</p> : ""}
                  <button 
                    type="submit"
                    className='w-full py-3.5 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2'
                  >
                    Reserve Now
                  </button>
+                  
                </form>
+               
                
                <div className='mt-6 pt-4 border-t border-gray-200'>
                  <p className='text-xs text-gray-500 text-center flex items-center justify-center gap-1'>
@@ -419,7 +428,10 @@ function HotelDetails(props) {
            </div>
          </div>
        </div>
-    </div>    
+    </div>  
+
+    
+      
    </> 
   )
 }

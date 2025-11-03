@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { Navigate } from 'react-router-dom'
+
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 function Login(props) { 
+    const port = "http://localhost:3000"
    const navigate = useNavigate()
 
     const [errorMsg , setErrorMsg] = useState('')
@@ -37,7 +38,7 @@ function Login(props) {
           },
           body : JSON.stringify(data)
       }
-      const response = await fetch("http://localhost:3000/hotel/login" , options)
+      const response = await fetch(`${port}/hotel/login`, options)
       const dataa = await response.json()
       console.log(dataa)
 
@@ -72,7 +73,7 @@ function Login(props) {
           
   return (
     <>
-    <div>
+    <div className='h-100 '>
      {/* <form onSubmit={onSubmit} className='flex flex-col'>
          <h1 className='text-center font-bold text-blue-700 text-xl'>Login</h1>
         <label htmlFor="email" className='mt-1 text-blue-700 pt-1 font-semibold'>Email</label>
@@ -82,7 +83,7 @@ function Login(props) {
         <button type="submit" className={`rounded-md px-2 py-2 mt-4 ${password === "" || email==="" ? "bg-gray-200" : "bg-blue-700 text-[#ffffff]"}`}>Login</button>
       </form> */}
       <button className='text-blue-700 text-xl font-semibold px-10 my-4' onClick={goToHome}>BookYourStay</button>
-      <form onSubmit={onSubmit} className="flex flex-col gap-4 mx-auto items-start p-8 py-12 w-80 sm:w-[352px] text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white">
+      <form onSubmit={onSubmit} className="flex flex-col gap-4 mx-auto mt-30 sm:mt-3 xl:mt-9  items-start p-8 py-12  w-80 sm:w-[352px] text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white">
             <p className="text-2xl font-medium m-auto">
                 <span className="text-indigo-500">User</span> Login
                 {/* {state === "login" ? "Login" : "Sign Up"} */}

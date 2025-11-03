@@ -4,8 +4,10 @@ import Cookies from 'js-cookie'
 
 
 function AdminLogin() {
+    const port = "http://localhost:3000"
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [errorMsg , setErrorMsg] = useState(null)
     
     const navigate = useNavigate()
     function onChangeEmail(e){
@@ -15,7 +17,7 @@ function AdminLogin() {
         setPassword(e.target.value)
     }
     const goToHome = () => {
-      navigate('/')
+      navigate('/admindashboard')
     }
     const onNavigateToRegister = () => {
         navigate('/adminregister')
@@ -38,27 +40,40 @@ function AdminLogin() {
               },
               body : JSON.stringify(data)
            } 
-           const response = await fetch('http://localhost:3000/adminroute/login' , options)
+           const response = await fetch(`${port}/adminroute/login` , options)
            const dataa = await response.json()
-           console.log("response: " ,dataa)
+           console.log(dataa)
         //    console.log("adminid: ",dataa.admin)
+            
            
-           const adminId = Cookies.set("adminId" , dataa.admin._id )
-           Cookies.get('adminId' , adminId)
-           console.log(adminId)
-
            if(dataa.token){
-              Cookies.set("adminToken" , dataa.token , {expires:1})
+              localStorage.setItem("adminToken" , dataa.token)
               console.log(dataa.token)
            }
            if(response.ok){
               alert("Login successfull")
               navigate('/admindashboard')
-
+            }
+           else{
+              setErrorMsg(dataa.message || "Invalid login credentials")
            }
+
+           if (dataa.admin?._id) {
+                 localStorage.setItem("adminId", dataa.admin._id)
+           }   
+           if(dataa.admin?.email){
+                localStorage.setItem("adminEmail" , dataa.admin.email)
+                
+           }
+           localStorage.getItem('adminId' , adminId)
+           localStorage.getItem('adminEmail' , adminEmail)
+           console.log(adminEmail)
+           console.log(adminId)
         } 
+
         catch (error) {
             console.log(error)
+            
         }
     }
 
@@ -82,11 +97,13 @@ function AdminLogin() {
                 <p>
                     Create an account? <span  onClick={onNavigateToRegister} className="text-indigo-500 cursor-pointer">click here</span>
                 </p>
-             {/* {errorMsg && (<p className='text-red-500'>*{errorMsg}</p>)} */}
+                {errorMsg && <p className='text-red-500'>*{errorMsg}</p>}
+             
 
             <button className="bg-indigo-500 hover:bg-indigo-600 transition-all text-white w-full py-2 rounded-md cursor-pointer" >
                 {/* {state === "register" ? "Create Account" : "Login"} */}Login
             </button>
+
         </form>
 
      </div>

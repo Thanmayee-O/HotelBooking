@@ -58,11 +58,11 @@ export const postBooking = async(req , res)=>{
     });
     await booking.save();
 
-    // Update room with booking
+    
     assignedRoom.bookings.push({ bookingId: booking._id, checkIn: start, checkOut: end });
     hotel.availableRooms -= 1;
     await assignedRoom.save();
-        // await booking.save();
+        
         res.status(200).json({success : true , message : "hotel booked successfully", booking })
      }
 

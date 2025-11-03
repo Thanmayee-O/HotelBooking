@@ -7,6 +7,7 @@ import BookNow from "./Register";
 import Register from "./Register";
 
 const Home = () =>{
+     
     const [register , setRegister] = useState(false)
     const [login , setLogin] = useState(false)
     

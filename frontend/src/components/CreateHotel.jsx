@@ -4,6 +4,7 @@ import Cookies from 'js-cookie'
 
 
 function CreateHotel() {
+  const port = "http://localhost:3000"
   const [hotelName,  setHotelName] = useState("")
   const [des, setDes] = useState("")
   const [city, setCity] = useState("")
@@ -19,26 +20,25 @@ function CreateHotel() {
        setImages(prev => [...prev, ...files])
     }
 
-    const adminId = Cookies.get("adminId")
-
+    const adminId = localStorage.getItem("adminId")
+    console.log(adminId)
     
-     function getData(){
-      async function fetchHotels(){
+    useEffect(() => {
+      async function getData() {
+        if (!adminId) return; // wait until adminId is available
         try {
-          const res = await fetch(`http://localhost:3000/hotel/admin/${adminId}`)
-          const data = await res.json()
-            setHotels(data.hotels || [])
-        } 
-        catch (error) {
-          console.log(error)
+          const res = await fetch(`${port}/hotel/admin/${adminId}`);
+          const data = await res.json();
+           console.log("Fetched hotels:", data);
+          setHotels(data.hotels || []);
+        } catch (error) {
+          console.log(error);
         }
-        if (adminId) {
-          fetchHotels()
-      }    
-    }
-      fetchHotels()  
-   }    
-  useEffect(getData , [adminId])
+      }
+      getData();
+    }, [adminId]);
+
+
     // Reset form
     const resetForm = () => {
       setHotelName("")
@@ -74,19 +74,21 @@ function CreateHotel() {
         return
       }
       try {
-        const token = Cookies.get("adminToken")
-        const res = await fetch(`http://localhost:3000/hotel/rooms/${id}`, {
+        const token = localStorage.getItem("adminToken")
+        const res = await fetch(`${port}/hotel/rooms/${id}`, {
           method : "DELETE",
           headers: {
             Authorization: `Bearer ${token}`
           }
         })
-        alert("Hotel deleted successfully")
-        // Refresh hotels list
         const data = await res.json()
+       
+        // Refresh hotels list
+        
         console.log(data)
         if(res.ok){
           alert("Hotel deleted successfully")
+          setHotels(prev => prev.filter(h => h._id !== id));
         }
         else{
           alert("data.message" || "Failed to delete hotel")
@@ -96,12 +98,14 @@ function CreateHotel() {
         alert("Failed to delete hotel")
       }
     }
-
+    
+   
     const onCreateHotel = async(event) => {
         event.preventDefault()
 
-        const token = Cookies.get("adminToken")
-        const adminId = Cookies.get("adminId")
+        const token = localStorage.getItem("adminToken")
+        const adminId = localStorage.getItem("adminId")
+  
         
         try {
           if (editingHotel) {
@@ -127,12 +131,15 @@ function CreateHotel() {
               body: formData
             }
 
-            const response = await fetch(`http://localhost:3000/hotel/rooms/${editingHotel._id}`, options)
+            const response = await fetch(`${port}/hotel/rooms/${editingHotel._id}`, options)
             const dataa = await response.json()
             console.log(dataa)
 
             if (dataa.message || dataa.hotel) {
               alert("Hotel updated successfully")
+               const hotelId = dataa.hotel._id
+              localStorage.setItem("hotelId", hotelId)
+
             } else {
               alert("Hotel update failed")
             }
@@ -158,21 +165,48 @@ function CreateHotel() {
               body: formData
             }
 
-            const response = await fetch("http://localhost:3000/hotel/create", options)
+            const response = await fetch(`${port}/hotel/create`, options)
             const dataa = await response.json()
             console.log(dataa)  
             
             if(dataa.success){
               alert("Hotel added successfully")
-            } else {
-              alert("Hotel added failed, Hotel already added")
-            }
+              localStorage.setItem("hotelId" , dataa.hotel._id)
+              const hotelId = localStorage.getItem("hotelId")
+               try{
+                const response = await fetch(`${port}/adminroute/${hotelId}/postrooms` , 
+                { 
+                  method : "POST",
+                  headers : {
+                    "Content-Type" : "application/json",
+                    Authorization : `Bearer ${token}`
+                  }            
+                }
+              )
+                const data = await response.json()
+                if(response.ok){
+                  alert('Rooms added successfully for your hotel');
+                  console.log()
+                  console.log("Response:", data);
+                }
+                else{
+                  alert(`Failed to add rooms: ${data.message}`)
+                }
+              }
+              catch(error){
+                  console.log(error)
+                  alert("Something went wrong")
+              }
+          } else {
+            alert("Hotel added failed, Hotel already added")
           }
+        }
 
           
           resetForm()
-          const res = await axios.get(`http://localhost:3000/hotel/admin/${adminId}`)
-          setHotels(res.data.hotels || [])
+          const res = await fetch(`${port}/hotel/admin/${adminId}`)
+          const data = await res.json()
+          setHotels(data.hotels || [])
         } catch (error) {
           console.log(error)
         }
@@ -206,17 +240,17 @@ function CreateHotel() {
 
             <div className="mb-4">
               <label htmlFor="city" className="block text-gray-700 font-medium mb-1">
-                City
+                Select City:
               </label>
-              <input
-                id="city"
-                type="text"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                placeholder="Enter city"
-                className="w-full border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 rounded-lg px-4 py-2 outline-none transition-all"
-                required
-              />
+              <select  id="city" value={city} onChange={(e) => setCity(e.target.value)} className="border-1 border-gray-300 rounded p-2 w-full">
+                <option value="" disabled></option>
+                <option value="New Delhi">New Delhi</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Ooty">Ooty</option>
+                <option value="Bengaluru">Bengaluru</option>
+                <option value="Lonavala">Lonavala</option>
+                <option value="Goa">Goa</option>
+              </select>
             </div>
         
             <div className="mb-4">
@@ -298,7 +332,7 @@ function CreateHotel() {
                 className={`flex-1 py-3 rounded-lg text-white font-semibold text-lg transition-all shadow-md ${
                   hotelName && city && (!editingHotel || image) && des
                     ? "bg-blue-600 hover:bg-blue-700"
-                    : "bg-gray-400 cursor-not-allowed"
+                    : "bg-gray-400"
                 }`}
                 disabled={!hotelName || !city || (!editingHotel && !image) || !des}
               >
@@ -341,7 +375,7 @@ function CreateHotel() {
                       <td className="border border-gray-300 px-4 py-2">{hotel.name}</td>
                       <td className="border border-gray-300 px-4 py-2">{hotel.city}</td>
                       <td className="border border-gray-300 px-4 py-2">{hotel.address}</td>
-                      <td className="border border-gray-300 px-4 py-2">${hotel.price}</td>
+                      <td className="border border-gray-300 px-4 py-2">₹{hotel.price}</td>
                       <td className="border border-gray-300 px-4 py-2 max-w-xs truncate">{hotel.des}</td>
                       <td className="border border-gray-300 px-4 py-2">
                         <div className="flex gap-2">
@@ -358,6 +392,7 @@ function CreateHotel() {
                           >
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className='h-5' fill="gray"><path d="M232.7 69.9L224 96L128 96C110.3 96 96 110.3 96 128C96 145.7 110.3 160 128 160L512 160C529.7 160 544 145.7 544 128C544 110.3 529.7 96 512 96L416 96L407.3 69.9C402.9 56.8 390.7 48 376.9 48L263.1 48C249.3 48 237.1 56.8 232.7 69.9zM512 208L128 208L149.1 531.1C150.7 556.4 171.7 576 197 576L443 576C468.3 576 489.3 556.4 490.9 531.1L512 208z"/></svg>
                           </button>
+                          
                         </div>
                       </td>
                     </tr>

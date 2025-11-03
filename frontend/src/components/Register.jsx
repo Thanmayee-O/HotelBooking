@@ -9,7 +9,7 @@ function Register() {
     const [password , setPassword] = useState('')
     const [firstName , setFirstName] = useState('')
     const [lastName , setLastName] = useState('')
-    
+    const [errorMsg , setErrorMsg] = useState('')
        
     const onChangeEmail = (event)=>{
         setEmail(event.target.value)
@@ -49,7 +49,7 @@ function Register() {
         },
          body : JSON.stringify(data)
     }
-     const response = await fetch("http://localhost:3000/hotel/register" , options)
+     const response = await fetch(`${port}/hotel/register`, options)
      const dataa = await response.json()
      console.log(dataa)
      
@@ -64,7 +64,8 @@ function Register() {
         navigate('/')
     }
     else{
-        alert(dataa.error)
+        // alert(dataa.error)
+        setErrorMsg(dataa.error)
     }
      }
      catch(e){
@@ -100,7 +101,7 @@ function Register() {
                 <p>
                     Already have an account? <span onClick={navigateToLogin} className="text-indigo-500 cursor-pointer">click here</span>
                 </p>
-            
+             {errorMsg && (<p className='text-red-500'>*{errorMsg}</p>)}
             <button type="submit" className="bg-indigo-500 hover:bg-indigo-600 transition-all text-white w-full py-2 rounded-md cursor-pointer">
                 Create Account
             </button>

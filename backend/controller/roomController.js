@@ -83,3 +83,18 @@ export const deleteRooms = async(req , res)=>{
       res.status(500).json({success : false , message : "Internal server error"})
    }
 }
+
+export const deleteRoomByHotel = async(req , res)=>{
+    const {id} = req.params 
+  try {
+    const deleteRoom = await RoomModel.findByIdAndDelete(id)
+    if(!deleteRoom){
+      res.status(404).json({success : false , message : "Room not found"})
+    }
+    res.status(200).json({sucess : true , message : "rooms deleted successfully"})
+    
+  } catch (error) {
+     console.log(error)
+     res.status(500).json({success : false , message : "Internal server error"})
+  }
+}

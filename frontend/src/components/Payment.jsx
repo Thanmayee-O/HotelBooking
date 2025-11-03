@@ -6,14 +6,15 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 function Payment(props) {
+  const port = "http://localhost:3000"
   const {totalPrice} = props
   const {bookingid} = useParams()
   const navigate = useNavigate()
   const today = new Date().toISOString().split("T")[0];
-
   const [cardHolder , setCardHolder] = useState('')
   const [cardNum , setCardNum] = useState('')
   const [expiryDate , setExpiryDate] = useState(today)
+  const [click, setClick] = useState(true)
   // const [cvv , setCvv] = useState('')
   
     
@@ -42,7 +43,7 @@ function Payment(props) {
       
             const payload = { bookingId : bookingid, date, cardNum ,amount:totalPrice , cardHolderName : cardHolder, cardExpMonth: new Date(expiryDate).getMonth() + 1,cardExpYear: new Date(expiryDate).getFullYear()};
            
-           const response = await fetch('http://localhost:3000/hotel/payment', {
+           const response = await fetch(`${port}/hotel/payment`, {
              method : "POST",
              headers : {
                 "Content-Type" : "application/json",
@@ -61,6 +62,9 @@ function Payment(props) {
           //  }
           //  console.log("Total Price in Payment page:", totalPrice);
 
+        }
+        function payBut(){
+          setClick(false)
         }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -124,9 +128,9 @@ function Payment(props) {
           </div>
 
           <button
-            type="submit"
+            type="submit" onClick = {payBut}
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-            Pay Now
+            {click ? "Pay Now" : "Proccessing....."}
           </button>
            
         </form>

@@ -26,7 +26,13 @@ const Navbar = (props) => {
       setLogin(Cookies.remove("jwtToken"))
       console.log("Cookies: ",Cookies.get("jwtToken"))
     }
-   
+    const onClickMenuBar = () => {
+      setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
+    const onOpenMenu = () => {
+      setIsMobileMenuOpen(false)
+    }
+
    return(
   <nav className="bg-gradient-to-r from-blue-700 to-blue-500 shadow-md fixed w-full z-50 top-0 left-0 animate-fadeInDown">
     <div className="container mx-auto px-4">
@@ -93,7 +99,7 @@ const Navbar = (props) => {
 
         {/* Mobile Menu Button */}
         <button 
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onClick={onClickMenuBar}
           className="lg:hidden text-white focus:outline-none"
           aria-label="Toggle menu"
         >
@@ -115,28 +121,28 @@ const Navbar = (props) => {
           <Link 
             className="block text-white hover:bg-blue-500 px-4 py-3 rounded-lg transition-all duration-200 font-medium" 
             to='/'
-            onClick={() => setIsMobileMenuOpen(false)}
+            onClick={onOpenMenu}
           >
             Home
           </Link>
           <a 
             href="#about" 
             className="block text-white hover:bg-blue-500 px-4 py-3 rounded-lg transition-all duration-200 font-medium"
-            onClick={() => setIsMobileMenuOpen(false)}
+            onClick={onOpenMenu}
           >
             About
           </a>
           <Link 
             to='/rooms' 
             className="block text-white hover:bg-blue-500 px-4 py-3 rounded-lg transition-all duration-200 font-medium"
-            onClick={() => setIsMobileMenuOpen(false)}
+            onClick={onOpenMenu}
           >
             Rooms
           </Link>
           <Link 
             className="block text-white hover:bg-blue-500 px-4 py-3 rounded-lg transition-all duration-200 font-medium" 
             to='/viewbookings'
-            onClick={() => setIsMobileMenuOpen(false)}
+            onClick={onOpenMenu}
           >
             View Bookings
           </Link>

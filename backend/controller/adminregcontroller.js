@@ -37,10 +37,12 @@ export const createAdminLogin = async(req , res)=>{
     
     try{
         const admin = await hotelAdmin.findOne({email});
-        if(!admin || !(await bcrypt.compare(password , admin.password))){
+        if(!admin){
              return res.status(401).json({success : false , message : "Invalid username or password" })
         }
-        
+        if(!(await bcrypt.compare(password , admin.password))){
+            return res.status(401).json({success : false , message : "Invalid username or password" })
+        }
         const token = jwt.sign({adminId : admin._id} , process.env.ADMIN_SECRET , {expiresIn : "24h"})
         res.status(200).json({success : true , message : "Login successfull"  , token , admin})
         console.log(email , "this is token" , token)
