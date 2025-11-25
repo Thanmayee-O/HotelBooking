@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Alert from '../components/Alert'
 
 function AdminRegister() {
-    const port = "http://localhost:3000"
+    const port = "https://hotelbooking-fcz6.onrender.com"
     const [username,  setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")

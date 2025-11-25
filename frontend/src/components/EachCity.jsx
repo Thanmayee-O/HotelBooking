@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { useNavigate} from 'react-router-dom'
 
 function EachCity() {
-     const port = "http://localhost:3000"
+     const port = "https://hotelbooking-fcz6.onrender.com"
      const [eachCity , setCity] = useState([])
      const {city} = useParams()
      const navigate = useNavigate()     

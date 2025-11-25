@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 function Payment(props) {
-  const port = "http://localhost:3000"
+  const port = "https://hotelbooking-fcz6.onrender.com"
   const {totalPrice} = props
   const {bookingid} = useParams()
   const navigate = useNavigate()

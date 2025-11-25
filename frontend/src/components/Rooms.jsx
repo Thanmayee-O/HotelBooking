@@ -6,7 +6,7 @@ import { ClipLoader } from "react-spinners";
 
 
 function Rooms() {
-    const port = "http://localhost:3000"
+    const port = "https://hotelbooking-fcz6.onrender.com"
      const navigate = useNavigate()
      const [rooms ,setRooms] = useState([])
      const [search , setSearch] = useState('')

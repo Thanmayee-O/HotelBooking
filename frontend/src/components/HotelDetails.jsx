@@ -38,7 +38,7 @@ const settings = {
 
 
 function HotelDetails(props) {
-     const port = "http://localhost:3000"
+     const port = "https://hotelbooking-fcz6.onrender.com"
     const {totalPrice, setTotalPrice} = props
     const [details , setDetails] = useState({})
     const [reviewList , setReviewList] = useState([])

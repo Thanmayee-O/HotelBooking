@@ -4,7 +4,7 @@ import Cookies from 'js-cookie'
 
 
 function CreateHotel() {
-  const port = "http://localhost:3000"
+  const port = "https://hotelbooking-fcz6.onrender.com"
   const [hotelName,  setHotelName] = useState("")
   const [des, setDes] = useState("")
   const [city, setCity] = useState("")

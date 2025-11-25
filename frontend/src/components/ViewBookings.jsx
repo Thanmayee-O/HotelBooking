@@ -4,7 +4,7 @@ import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 
 const ViewBookings = () => {
-    const port = "http://localhost:3000"
+    const port = "https://hotelbooking-fcz6.onrender.com"
     const [bookings, setBookings] = useState([]);
     const [errorMsg , setErrorMsg] = useState('')
     const [loading , setLoading] = useState(false)
