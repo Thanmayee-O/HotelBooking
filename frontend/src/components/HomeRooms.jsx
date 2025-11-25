@@ -41,7 +41,7 @@ const HomeRooms = () => {
    const navigate = useNavigate()
   
   function onEachRoom(city){
-     navigate(`${city}` , {replace:true})
+     navigate(`/each/${city}` , {replace:true})
   }
   
 

@@ -9,7 +9,6 @@ import Register from "./components/Register"
 import CreateHotel from "./components/CreateHotel"
 import HotelDetails from "./components/HotelDetails"
 import SucessfulPage from "./components/SucessfulPage"
-
 import Payment from "./components/Payment"
 import ViewBookings from "./components/ViewBookings"
 import { useState } from "react"
@@ -23,32 +22,25 @@ function App(){
 
  return(
   
- 
- 
   <>
    <BrowserRouter>
-   
-    <Routes>
-      
-    <Route path='/admindashboard' element={<AdminDashboard></AdminDashboard>}/>
-     <Route path='/login' element={<Login/>}/>
-     <Route path='/' element={<Home/>}/>
-     <Route path='/homerooms' element={<HomeRooms></HomeRooms>}/>
-     <Route path='/rooms' element={<Rooms/>}/>
-     
-     <Route path='/:city' element={<EachCity/>}/>
-     {/* <Route path='/:id' element={<EachHotel/>}/> */}
-     <Route path='/adminregister' element={<AdminRegister/>}/>
-     <Route path='/adminlogin' element={<AdminLogin/>}/>
-     <Route path='/register' element={<Register/>}/>
-     <Route path='/hotel/:id' element={<HotelDetails totalPrice={totalPrice} setTotalPrice={setTotalPrice}/>}/>
-     <Route path='/success' element={<SucessfulPage/>}/>
-     <Route path='/createhotel' element={<CreateHotel/>}/>
-     
-     <Route path='/payment/:bookingid' element={<Payment totalPrice={totalPrice}/>}/>
-     <Route path='/viewbookings' element={<ViewBookings></ViewBookings>}/>
-    <Route path='*' element={<NotFound/>}/>
-   </Routes>
+     <Routes>
+      <Route path='/admindashboard' element={<AdminDashboard></AdminDashboard>}/>
+      <Route path='/login' element={<Login/>}/>
+      <Route path='/' element={<Home/>}/>
+      <Route path='/homerooms' element={<HomeRooms></HomeRooms>}/>
+      <Route path='/rooms' element={<Rooms/>}/>
+      <Route path='/adminregister' element={<AdminRegister/>}/>
+      <Route path='/adminlogin' element={<AdminLogin/>}/>
+      <Route path='/register' element={<Register/>}/>
+      <Route path='/hotel/:id' element={<HotelDetails totalPrice={totalPrice} setTotalPrice={setTotalPrice}/>}/>
+      <Route path='/success' element={<SucessfulPage/>}/>
+      <Route path='/createhotel' element={<CreateHotel/>}/>
+      <Route path='/payment/:bookingid' element={<Payment totalPrice={totalPrice}/>}/>
+      <Route path='/viewbookings' element={<ViewBookings></ViewBookings>}/>
+      <Route path='/each/:city' element={<EachCity/>}/>
+      <Route path='*' element={<NotFound/>}/>
+    </Routes>
    </BrowserRouter> 
   
    {/* <AdminRegister /> */}

@@ -18,9 +18,7 @@ function NotFound() {
         <button onClick={onGoHome} class="bg-gray-800 hover:bg-black px-7 py-2.5 text-white rounded-md active:scale-95 transition-all">
             Return Home
         </button>
-        <a href="#" class="border border-gray-300 px-7 py-2.5 text-gray-800 rounded-md active:scale-95 transition-all">
-            Contact support
-        </a>
+        
     </div>
 </div>
     </div>

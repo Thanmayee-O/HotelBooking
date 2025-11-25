@@ -40,23 +40,23 @@ function Login(props) {
       }
       const response = await fetch(`${port}/hotel/login`, options)
       const dataa = await response.json()
-      console.log(dataa)
+      // console.log(dataa)
 
       if(dataa.token){
         Cookies.set("jwtToken" , dataa.token , {expires : 1})
-        console.log(dataa.token)
+        // console.log(dataa.token)
       }
       if (dataa.getEmail?._id){
           Cookies.set("userId" , dataa.getEmail._id, {expires : 1})
-          console.log("userid : " ,dataa.getEmail._id)
+          // console.log("userid : " ,dataa.getEmail._id)
       }
      if(dataa.getEmail?.email){
         Cookies.set("email" , dataa.getEmail.email , {expires : 1})
-        console.log("email: ", dataa.getEmail.email)
+        // console.log("email: ", dataa.getEmail.email)
      }
      if(dataa.getEmail?.firstName){
         Cookies.set("name", dataa.getEmail.firstName , {expires:1})
-        console.log("name: " , dataa.getEmail.firstName)
+        // console.log("name: " , dataa.getEmail.firstName)
      }
       if(response.ok){
         alert("Login successfull!")

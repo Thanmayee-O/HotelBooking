@@ -42,13 +42,13 @@ function AdminLogin() {
            } 
            const response = await fetch(`${port}/adminroute/login` , options)
            const dataa = await response.json()
-           console.log(dataa)
+        //    console.log(dataa)
         //    console.log("adminid: ",dataa.admin)
             
            
            if(dataa.token){
               localStorage.setItem("adminToken" , dataa.token)
-              console.log(dataa.token)
+            //   console.log(dataa.token)
            }
            if(response.ok){
               alert("Login successfull")
@@ -67,8 +67,8 @@ function AdminLogin() {
            }
            localStorage.getItem('adminId' , adminId)
            localStorage.getItem('adminEmail' , adminEmail)
-           console.log(adminEmail)
-           console.log(adminId)
+        //    console.log(adminEmail)
+        //    console.log(adminId)
         } 
 
         catch (error) {
