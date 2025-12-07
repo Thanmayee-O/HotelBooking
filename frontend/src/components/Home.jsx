@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import Navbar from "./Navbar";
 import HomeRooms from "./HomeRooms";
 import Login from './Login'
@@ -43,24 +42,13 @@ const Home = () =>{
       <div className="absolute top-[9%] left-[35%]">
         {login && <Login setLogin={setLogin}/>}
       </div>
-     
-      {/* <div id="about" className="py-20 bg-white animate-fadeInUp">
-    <div className="max-w-4xl mx-auto px-6 text-center animate-fadeInUp">
-      <h2 className="text-3xl font-bold text-gray-800 mb-4">About BookYourStay</h2>
-      <p className="text-gray-600 text-lg">
-        BookYourStay is your trusted partner for booking the finest hotels around
-        the world. Our platform offers a seamless experience, exclusive deals,
-        and 24/7 customer support to make your stay unforgettable.
-      </p>
-    </div>
-  </div> */}
       <div className="flex flex-col md:flex-row items-center justify-center gap-10 max-md:px-4 animate-fadeUp mt-8" id="about">
         <div className="relative shadow-2xl shadow-indigo-600/40 rounded-2xl overflow-hidden shrink-0">
             <img className="max-w-md w-full object-cover rounded-2xl"
                 src="https://i.pinimg.com/736x/42/fc/9a/42fc9a8383520d0c0ef509074c493623.jpg"
                 alt="image" />
-            
-        </div>
+      </div>
+
         <div className="text-sm text-slate-600 max-w-lg">
             <h1 className="text-xl uppercase font-semibold text-slate-700">What we do?</h1>
             <div className="w-24 h-[3px] rounded-full bg-gradient-to-r from-indigo-600 to-[#DDD9FF]"></div>

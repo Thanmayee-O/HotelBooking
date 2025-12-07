@@ -3,31 +3,51 @@ import { useState , useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { useNavigate} from 'react-router-dom'
+import { ClipLoader } from "react-spinners";
 
 function EachCity() {
      const port = "https://hotelbooking-fcz6.onrender.com"
      const [eachCity , setCity] = useState([])
      const {city} = useParams()
      const navigate = useNavigate()     
+     const [loading , setLoading] = useState(false)
 
      const onGoHome = () => {
        navigate('/')
      }
     console.log(city)
      function getEachCity(){
+
          async function fn(){
-              const data = await fetch(`${port}/hotel/${city}`)
+          try{
+            setLoading(true)
+            const data = await fetch(`${port}/hotel/${city}`)
               const response = await data.json()
               console.log(response)
               setCity(response.cities)
+          }
+          catch(error){
+            console.log(error)
+          }
+          finally{
+             setLoading(false)
+          }
+              
          }
          fn()
       }    
        useEffect(getEachCity,[city])    
   return (
-    <>
-     
-     <button className='pt-2 pl-2 text-xl text-blue-600 font-semibold' onClick={onGoHome}>BookYourStay</button>
+     loading ?  
+    
+    
+           (  
+          <div className="flex justify-center items-center min-h-screen bg-white">
+             <ClipLoader color="#2563eb" size={50} />
+           </div>
+           ):
+     <>
+     (<button className='pt-2 pl-2 text-xl text-blue-600 font-semibold' onClick={onGoHome}>BookYourStay</button>
      <h1 className='text-blue-600 text-3xl text-center font-semibold mb-10 mt-2'>Available Hotels</h1>
      
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6' id="rooms">
@@ -74,8 +94,9 @@ function EachCity() {
             </Link>
            
        ))}
-    </div>
-    </>
+    </div>)
+   </>
+  
   )
 }
 
