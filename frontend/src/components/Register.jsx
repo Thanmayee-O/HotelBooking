@@ -4,12 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 function Register() { 
     const navigate = useNavigate()
+    const port = "https://hotelbooking-fcz6.onrender.com"
     // const [state , setState] = useState('Login')
     const [email , setEmail] = useState('')
     const [password , setPassword] = useState('')
     const [firstName , setFirstName] = useState('')
     const [lastName , setLastName] = useState('')
     const [errorMsg , setErrorMsg] = useState('')
+    
        
     const onChangeEmail = (event)=>{
         setEmail(event.target.value)
@@ -62,6 +64,7 @@ function Register() {
         // console.log(userId)
         alert("Registation successfull!")
         navigate('/')
+        
     }
     else{
         // alert(dataa.error)

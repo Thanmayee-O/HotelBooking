@@ -35,7 +35,7 @@ const list = [
           }
 
 
-  ]
+]
 
 const HomeRooms = () => {
    const navigate = useNavigate()
