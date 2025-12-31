@@ -170,9 +170,7 @@ export const deleteHotels = async(req , res)=>{
   try {
       const removeHotels = await Hotelmodel.deleteMany({}) 
       res.status(200).json({success : true , message : "hotels deleted successfully"})
-
-
-  } 
+   } 
   catch (error) {
     console.log(error)
     

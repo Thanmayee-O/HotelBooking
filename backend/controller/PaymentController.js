@@ -6,7 +6,6 @@ import nodemailer from 'nodemailer'
 export const PaymentController = async(req , res)=>{
 
   try{            
-     
      const { bookingId, cardHolderName, date, cardNum ,cardExpMonth, cardExpYear} = req.body;
      const checkBooking = await Bookingmodel.findById(bookingId)
      if (!checkBooking){
@@ -25,23 +24,32 @@ export const PaymentController = async(req , res)=>{
         cardnum,
         cardExpMonth,
         cardExpYear,
-        date
+        date 
       });
       await payment.save();
 
       const user = await User.findById(checkBooking.userId)
       if(!user){
-        res.status(404).json({success : false , message : "User not found"})
+        return res.status(404).json({success : false , message : "User not found"})
       }
+      console.log("Email:", process.env.EMAIL_USER);
+      console.log("Pass:", process.env.EMAIL_PASS ? "Loaded" : "NOT Loaded");
+     
         const transporter = nodemailer.createTransport({
+           host: "smtp.gmail.com",
+           port: 465,
+           secure: true,
           service : "gmail",
           auth : {
             user : process.env.EMAIL_USER,
             pass : process.env.EMAIL_PASS
           },
+          tls: {
+            rejectUnauthorized: false
+          }
         })
-      
-      console.log(user.email)
+      console.log("User ID:", checkBooking.userId);
+      console.log("Users email: ",user.email)
       const dateOptions = new Date()
       const formattedDate = dateOptions.toString().slice(0,10)
       const mailOptions = {
@@ -66,7 +74,7 @@ export const PaymentController = async(req , res)=>{
             console.log("Email sending failed: ",error.message)
           }
         
-      return res.status(201).json({success : true , message : "Review added successfully"})
+         return res.status(201).json({success : true , message : "Payment done successfully", transactionId: payment._id,payment})
      }
    
   catch(error){

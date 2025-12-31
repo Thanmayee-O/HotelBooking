@@ -11,12 +11,12 @@ export const sendEmail = async(req , res)=>{
            const {userId , amount} = req.body 
 
            if(!userId || !amount){
-               res.status(404).json({success : false , message : "user and amount are required"})
+               return res.status(404).json({success : false , message : "user and amount are required"})
            }
 
-           const user = await User.find({userId});
+           const user = await User.find(userId);
            if(!user) {
-              res.status(404).json({success : false , message : "user not found"})
+              return res.status(404).json({success : false , message : "user not found"})
            }
                   const payment = new Payment({
                         user: user._id,
@@ -32,7 +32,7 @@ export const sendEmail = async(req , res)=>{
                 pass: process.env.EMAIL_PASS, 
             },
            }) 
-           const populatedPayment = await User.find(id).populate("user" , "firstName email");
+         const populatedPayment = await User.find(id).populate("user" , "firstName email");
          const mailOptions = {
             from : process.env.EMAIL_USER,
             to : user.email,
@@ -51,10 +51,10 @@ export const sendEmail = async(req , res)=>{
            console.log("Email pass length:", process.env.EMAIL_PASS?.length);
          try {
            await transporter.sendMail(mailOptions);
-           console.log("Email sent to the user sucessfully: " , populatedPayment.user.email )
+           console.log("Email sent to the user sucessfully: " , populatedPayment.user.email)
          }
          catch(error){
-               console.error("Email sending failed:", error.message);
+               console.error("Email sending failed:", error);
           }    
         res.status(200).json({success : true , message : "Payment saved and email is sent successfully!" , transactionId: Payment.transactionId  })
         } 

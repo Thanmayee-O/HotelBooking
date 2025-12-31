@@ -53,14 +53,15 @@ function Payment(props) {
              body : JSON.stringify(payload)
            })
            const data = await response.json()
-           navigate('/success')
-          //  try {
-          //     navigate('/success')
-          //     console.log(data.transactionId)
-          //  } catch (error) {
-          //      `Error: ${data.message || "Something went wrong"}`;
-          //  }
-          //  console.log("Total Price in Payment page:", totalPrice);
+           console.log(data)
+          //  navigate('/success')
+           try {
+              navigate('/success')
+              console.log(data.transactionId)
+           } catch (error) {
+               `Error: ${data.message || "Something went wrong"}`;
+           }
+           console.log("Total Price in Payment page:", totalPrice);
 
         }
         function payBut(){

@@ -93,7 +93,6 @@ function HotelDetails(props) {
               console.log(jsonData.reviews)
               setReviewList(jsonData.reviews)
             }
-        
         catch(e){
             console.log(e)
         }
@@ -110,9 +109,10 @@ function HotelDetails(props) {
 
         const token = Cookies.get("jwtToken")
         
-         if (!token) return alert("Please login first");
+        if (!token) return alert("Please login first");
 
          const userId = Cookies.get("userId")
+         console.log("userId",userId)
          
         const response = await fetch(`${port}/hotel/review` , {
           method : "POST",
@@ -130,6 +130,7 @@ function HotelDetails(props) {
           })
         })
         const data = await response.json()
+        console.log(data)
           if (data.success && data.review) {
               // Update frontend instantly without reloading
              setReviewList((prev) => [...prev, data.review]);
@@ -160,11 +161,9 @@ function HotelDetails(props) {
            const token = Cookies.get("jwtToken")
            if (!token) return alert("Please login first");
           
-          //  const userId = Cookies.get("userId")
-          //   if (!userId) { 
-          //       alert("Please login first");
-          //       return;
-          //   } 
+            if (!checkIn || !checkOut || !guests) {
+            return alert("Please fill all fields");
+          }
          const response = await fetch(`${port}/hotel/userbooking`, {
             method : "POST",  
             headers : {
@@ -183,13 +182,14 @@ function HotelDetails(props) {
            const data = await response.json()
            console.log(data)
 
-           if (!checkIn || !checkOut || !guests || !details.price) {
-              alert("Please select all fields.");
-              return 
-            }
+          //  if (!checkIn || !checkOut || !guests || !details.price) {
+          //     alert("Please select all fields.");
+          //     return 
+          //   }
             const checkInDate = new Date(checkIn);
             const checkOutDate = new Date(checkOut);
-            const days = Math.ceil((checkOutDate - checkInDate) / (1000*60*60*24)) + 1
+            // const days = Math.ceil((checkOutDate - checkInDate) / (1000*60*60*24)) + 1
+            const days = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
             const tp = parseInt(details.price) * parseInt(guests) * parseInt(days)
             setTotalPrice(tp)
             console.log("total price : ",tp) 
@@ -201,7 +201,14 @@ function HotelDetails(props) {
           
             // Navigate only if booking ID is valid
   
-         navigate(`/payment/${data.booking._id}`)
+        //  navigate(`/payment/${data.booking._id}`)
+        if (data.success && data.booking && data.booking._id) {
+              navigate(`/payment/${data.booking._id}`);
+        } else {
+              alert(data.message || "Booking failed, try another hotel");
+              return;
+        }
+
       }
 
       

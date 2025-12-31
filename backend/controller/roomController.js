@@ -6,7 +6,7 @@ export const createRoomsForHotel = async (req, res) => {
     // existing hotel creation logic
     const {hotelId} = req.params 
     const hotel = await Hotelmodel.findById(hotelId)
-     
+    
     if(!hotel){
       res.status(404).json({success : false , message : "hotel not found"})
     }
@@ -14,6 +14,10 @@ export const createRoomsForHotel = async (req, res) => {
     const existingRooms = await RoomModel.find({hotelId})
     if (existingRooms.length > 0) {
       return res.status(400).json({ success: false, message: "Rooms already exist for this hotel" });
+    }
+    const numericPrice = Number(hotel.price);
+    if (isNaN(numericPrice)) {
+      return res.status(400).json({ success: false, message: "Invalid hotel price format" });
     }
       const roomsToCreate = Array.from({ length: 10 }, (_, i) => ({
         roomNumber: i + 1,
@@ -24,7 +28,7 @@ export const createRoomsForHotel = async (req, res) => {
     }));
 
     const createdRooms = await RoomModel.insertMany(roomsToCreate);
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       message: "10 rooms created successfully",
       totalRooms: createdRooms.length,
@@ -46,7 +50,7 @@ export const bookRoom = async(req , res) => {
       return res.status(404).json({ success: false, message: "Room not available" });
     }
 
-     room.isAvailable = false;
+    room.isAvailable = false;
     room.bookings.push(bookingInfo);
     await room.save();
     return res.status(200).json({ success: true, message: "Room booked successfully", room });

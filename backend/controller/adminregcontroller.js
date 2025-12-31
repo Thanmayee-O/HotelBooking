@@ -66,6 +66,23 @@ export const getAdmins = async(req , res)=>{
     }
 }
 
+export const getAdminById = async(req , res) =>{
+     const {id} = req.params 
+    try {
+        const oneAdmin = await hotelAdmin.findById(id)
+        if(!oneAdmin){
+            console.log(error)
+            return res.status(404).json({sucess : false , message :"admin not found"})
+            
+        }
+        return res.status(200).json({success : true , message : "admin fetched successfully"})
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({success : false , message : "Internal server error"})
+    }
+}
+
 export const deleteAdmin = async(req , res)=>{
        const {id} = req.params 
      try {

@@ -27,7 +27,6 @@ const hotelSchema = new mongoose.Schema({
     },
     address : {
             type: String,
-             
     },
     
     admin : [

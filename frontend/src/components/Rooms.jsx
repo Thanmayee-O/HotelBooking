@@ -29,10 +29,10 @@ function Rooms() {
       async function fn(){
         try{
             setLoading(true)
-           const data = await fetch(`${port}/hotel/rooms`)
-           const response = await data.json()
-           console.log(response)
-           setRooms(response.hotels)
+            const data = await fetch(`${port}/hotel/rooms`)
+            const response = await data.json()
+            console.log(response)
+            setRooms(response.hotels)
         }
         catch(error){
            console.log(error)

@@ -10,8 +10,8 @@ export const postBooking = async(req , res)=>{
         const userId = req.user._id; 
         const {hotelId , checkIn , checkOut , guests} = req.body 
 
-         const hotel = await Hotelmodel.findById(hotelId);
-            if (!hotel) return res.status(404).json({ success: false, message: "Hotel not found" });
+        const hotel = await Hotelmodel.findById(hotelId);
+           if (!hotel) return res.status(404).json({ success: false, message: "Hotel not found" });
         
         const start = new Date(checkIn)
         const end = new Date(checkOut)
@@ -62,6 +62,7 @@ export const postBooking = async(req , res)=>{
     assignedRoom.bookings.push({ bookingId: booking._id, checkIn: start, checkOut: end });
     hotel.availableRooms -= 1;
     await assignedRoom.save();
+    await hotel.save()
         
         res.status(200).json({success : true , message : "hotel booked successfully", booking })
      }
