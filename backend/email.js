@@ -27,11 +27,11 @@ export const sendEmail = async(req , res)=>{
 
            const transporter = nodemailer.createTransport({
                 service: "gmail", 
-           auth: {
-                user: process.env.EMAIL_USER, 
-                pass: process.env.EMAIL_PASS, 
-            },
-           }) 
+                auth: {
+                      user: process.env.EMAIL_USER, 
+                      pass: process.env.EMAIL_PASS, 
+                  },
+                }) 
          const populatedPayment = await User.find(id).populate("user" , "firstName email");
          const mailOptions = {
             from : process.env.EMAIL_USER,
@@ -48,7 +48,8 @@ export const sendEmail = async(req , res)=>{
             </div>`
          }
            console.log("Email user:", process.env.EMAIL_USER);
-           console.log("Email pass length:", process.env.EMAIL_PASS?.length);
+           console.log("Email password" , process.env.EMAIL_PASS)
+          //  console.log("Email pass length:", process.env.EMAIL_PASS?.length);
          try {
            await transporter.sendMail(mailOptions);
            console.log("Email sent to the user sucessfully: " , populatedPayment.user.email)

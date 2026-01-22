@@ -37,8 +37,8 @@ export const PaymentController = async(req , res)=>{
      
         const transporter = nodemailer.createTransport({
            host: "smtp.gmail.com",
-           port: 465,
-           secure: true,
+           port: 587,
+           secure: false,
           service : "gmail",
           auth : {
             user : process.env.EMAIL_USER,
@@ -50,6 +50,7 @@ export const PaymentController = async(req , res)=>{
         })
       console.log("User ID:", checkBooking.userId);
       console.log("Users email: ",user.email)
+      
       const dateOptions = new Date()
       const formattedDate = dateOptions.toString().slice(0,10)
       const mailOptions = {

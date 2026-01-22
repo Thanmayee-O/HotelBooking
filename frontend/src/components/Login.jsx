@@ -10,6 +10,7 @@ function Login(props) {
     const [email , setEmail] = useState('')
     const [password , setPassword] = useState('')
     const [showPass , setShowPass] = useState(false)
+    const [click , setClick] = useState(true)
    
     const onChangeEmail = (event)=>{
         setEmail(event.target.value)
@@ -26,7 +27,9 @@ function Login(props) {
     const onShowPassword = () =>{
       setShowPass(prev=>!prev)
     }
-
+    const payBut = () => {
+      setClick(false)
+    }
     const onSubmit = async(event)=>{
         event.preventDefault()
         const data = {
@@ -120,9 +123,11 @@ function Login(props) {
                 </p>
              {errorMsg && (<p className='text-red-500'>*{errorMsg}</p>)}
 
-            <button className="bg-indigo-500 hover:bg-indigo-600 transition-all text-white w-full py-2 rounded-md cursor-pointer" >
-                {/* {state === "register" ? "Create Account" : "Login"} */}Login
-            </button>
+            <button
+            type="submit" onClick = {payBut}
+            className="bg-indigo-500 hover:bg-indigo-600 transition-all text-white w-full py-2 rounded-md cursor-pointer">
+            {click ? "Login" : "Logging in....."}
+          </button>
         </form>
      </div>
     </>
