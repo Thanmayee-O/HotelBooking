@@ -15,7 +15,7 @@ function EachCity() {
      const onGoHome = () => {
        navigate('/')
      }
-    console.log(city)
+    // console.log(city)
      function getEachCity(){
 
          async function fn(){
@@ -39,25 +39,22 @@ function EachCity() {
        useEffect(getEachCity,[city])    
   return (
      loading ?  
-    
-    
-           (  
+        (  
           <div className="flex justify-center items-center min-h-screen bg-white">
              <ClipLoader color="#2563eb" size={50} />
            </div>
            ):
      <>
-     <button className='pt-2 pl-2 text-xl text-blue-600 font-semibold' onClick={onGoHome}>BookYourStay</button>
-     <h1 className='text-blue-600 text-3xl text-center font-semibold mb-10 mt-2'>Available Hotels</h1>
+      <button className='pt-2 pl-2 text-xl text-blue-600 font-semibold' onClick={onGoHome}>BookYourStay</button>
+      <h1 className='text-blue-600 text-3xl text-center font-semibold mb-10 mt-2'>Available Hotels</h1>
      
-    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6' id="rooms">
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6' id="rooms">
       
-            {eachCity.map((each , index)=>(          
+         {eachCity.map((each , index)=>(          
           <Link 
               to={`/hotel/${each._id}`} 
               key={each._id || index}
-              className='group'
-            >
+              className='group'>
               <div className='bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 h-full flex flex-col ml-2'>
                 <div className='relative overflow-hidden h-60'>
                   <img 
@@ -65,8 +62,7 @@ function EachCity() {
                     alt={each.name}
                     className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300' 
                   />
-                 
-                </div>
+                 </div>
                 
                 <div className='p-5 flex-1 flex flex-col'>
                   <h2 className='text-xl font-bold text-gray-800 mb-2 line-clamp-1 group-hover:text-blue-600 transition-colors duration-200'>

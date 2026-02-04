@@ -33,16 +33,15 @@ export const PaymentController = async(req , res)=>{
         return res.status(404).json({success : false , message : "User not found"})
       }
       console.log("Email:", process.env.EMAIL_USER);
-      console.log("Pass:", process.env.EMAIL_PASS ? "Loaded" : "NOT Loaded");
+      // console.log("Pass:", process.env.EMAIL_PASS ? "Loaded" : "NOT Loaded");
      
         const transporter = nodemailer.createTransport({
            host: "smtp.gmail.com",
            port: 587,
            secure: false,
-          service : "gmail",
-          auth : {
+           auth : {
             user : process.env.EMAIL_USER,
-            pass : process.env.EMAIL_PASS
+            pass : process.env.EMAIL_PASS,
           },
           tls: {
             rejectUnauthorized: false
@@ -50,38 +49,42 @@ export const PaymentController = async(req , res)=>{
         })
       console.log("User ID:", checkBooking.userId);
       console.log("Users email: ",user.email)
-      
+      // console.log("SMTP USER:", process.env.BREVO_SMTP_USER);
+      // console.log("SMTP KEY exists:", !!process.env.BREVO_SMTP_KEY);
+
       const dateOptions = new Date()
       const formattedDate = dateOptions.toString().slice(0,10)
       const mailOptions = {
-            from : process.env.EMAIL_USER,
+            from :  process.env.EMAIL_USER,
             to : user.email,
-            subject : "Your payment is successfull",
+            subject : "Your Hotel booked successfully",
              html: `
             <div style="font-family: Arial, sans-serif; line-height: 1.5;">
             <h2>Hi ${user.firstName},</h2>
-            <p>Thank you for your payment of ₹${amount}.</p>
+            <p>Thank you for your payment of ₹${amount}</p>
             <p>Your booking has been successfully confirmed for ${formattedDate}.</p>
-            <p>We look forward to having you with us!</p>
+            <p>Thank you for booking!😊 We look forward to having you with us!</p>
             <br/>
             <p>Warm regards,<br/><b>Hotel Booking Team</b></p>
             </div>`
          }
 
+          let emailSent = false;
+
           try {
-            await transporter.sendMail(mailOptions)
-            console.log("Email sent sucessfully to: ",user.email)
+            await transporter.sendMail(mailOptions);
+            emailSent = true;
+            console.log("Email sent successfully to:", user.email);
           } catch (error) {
-            console.log("Email sending failed: ",error.message)
+            console.log("Email sending failed:", error.message);
           }
-        
-         return res.status(201).json({success : true , message : "Payment done successfully", transactionId: payment._id,payment})
-     }
+          return res.status(201).json({success: true,message: "Payment done successfully",emailSent,transactionId: payment._id,payment});
+        }
    
-  catch(error){
-    console.log(error)
-    res.status(500).json({success : false , message : "Internal server error"})
-  }
+          catch(error){
+            console.log(error)
+            res.status(500).json({success : false , message : "Internal server error"})
+          }
 }
 
 

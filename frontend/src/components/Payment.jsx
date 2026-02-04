@@ -28,45 +28,49 @@ function Payment(props) {
       const onChangeExpiryDate = (e) => {
         setExpiryDate(e.target.value)
       }
-    
-        const onSubmitPayment = async(e) => {
-           e.preventDefault()
-           if(!cardNum || !cardHolder){
-                alert("Enter valid details")
-                return 
-           }
-
-            const token = Cookies.get("jwtToken"); // if you require auth
-            const email = Cookies.get("email")
-            
-            const date = new Date().toISOString();
-      
-            const payload = { bookingId : bookingid, date, cardNum ,amount:totalPrice , cardHolderName : cardHolder, cardExpMonth: new Date(expiryDate).getMonth() + 1,cardExpYear: new Date(expiryDate).getFullYear()};
-           
-           const response = await fetch(`${port}/hotel/payment`, {
-             method : "POST",
-             headers : {
-                "Content-Type" : "application/json",
-                 Accept : "application/json",
-                 Authorization : `Bearer ${token}`
-             },
-             body : JSON.stringify(payload)
-           })
-           const data = await response.json()
-           console.log(data)
-          //  navigate('/success')
-           try {
-              navigate('/success')
-              console.log(data.transactionId)
-           } catch (error) {
-               `Error: ${data.message || "Something went wrong"}`;
-           }
-           console.log("Total Price in Payment page:", totalPrice);
-
-        }
-        function payBut(){
+      function payBut(){
           setClick(false)
-        }
+      }
+      const onSubmitPayment = async(e) => {
+          e.preventDefault()
+          if(!cardNum || !cardHolder){
+              alert("Enter valid details")
+              return 
+          }
+          const token = Cookies.get("jwtToken"); // if you require auth
+          const email = Cookies.get("email")
+            
+          const date = new Date().toISOString();
+    
+          const payload = { bookingId : bookingid, date, cardNum ,amount:totalPrice , cardHolderName : cardHolder, cardExpMonth: new Date(expiryDate).getMonth() + 1,cardExpYear: new Date(expiryDate).getFullYear()};
+          
+          const response = await fetch(`${port}/hotel/payment`, {
+            method : "POST",
+            headers : {
+              "Content-Type" : "application/json",
+                Accept : "application/json",
+                Authorization : `Bearer ${token}`
+            },
+            body : JSON.stringify(payload)
+          })
+          const data = await response.json()
+          console.log(data)
+          //  navigate('/success')
+          try {
+            // if(data.emailSent){
+            //     alert("Payment successful! Confirmation email sent.")
+            //     }
+            // else{
+            //     alert("Payment successful, but email could not be sent.");
+            // }
+            navigate('/success')
+            } catch (error) {
+                `Error: ${data.message || "Something went wrong"}`;
+            }
+            console.log("Total Price in Payment page:", totalPrice);
+
+            }
+        
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
@@ -109,18 +113,6 @@ function Payment(props) {
                 className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
               />
             </div>
-
-            {/* <div className="flex-1">
-              <label className="block text-sm text-gray-600 mb-1">CVV</label>
-              <input
-                type="password"
-                value={cvv}
-                onChange={onChangeCvv}
-                placeholder="***"
-                maxLength="3"
-                className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
-              />
-            </div> */}
           </div>
 
           <div>
@@ -129,9 +121,9 @@ function Payment(props) {
           </div>
 
           <button
-            type="submit" onClick = {payBut}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-            {click ? "Pay Now" : "Proccessing....."}
+              type="submit" onClick = {payBut}
+              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+              {click ? "Pay Now" : "Proccessing....."}
           </button>
            
         </form>

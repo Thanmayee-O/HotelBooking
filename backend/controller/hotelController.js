@@ -4,16 +4,17 @@ import { Hotelmodel} from "../model/hotelmodel.js";
 import {v2 as cloudinary} from 'cloudinary'
 import cloudinaryconnection from "../cloudinary.js";
 import { RoomModel } from "../model/roommodel.js";
+import { MAX } from "uuid";
 
 
 export const createRoom = async(req , res)=>{
   
      try{
-       
         await cloudinaryconnection()
 
         const {name , des , city , price , address} = req.body
         const adminId = req.adminId 
+
         console.log("Body:" , req.body)
 
         
@@ -27,9 +28,9 @@ export const createRoom = async(req , res)=>{
             return res.status(400).json({message: "All fields are required"});
         }
         const existingHotel = await Hotelmodel.findOne({ name: name, city: city });
-    if (existingHotel) {
-      return res.status(400).json({ message: "Hotel already exists" });
-    }
+        if (existingHotel) {
+          return res.status(400).json({ message: "Hotel already exists" });
+        }
 
       const result = await cloudinary.uploader.upload(image.path, {
       resource_type: "image",
@@ -69,16 +70,25 @@ export const createRoom = async(req , res)=>{
 
 export const getHotels = async (req, res) => {
   try {
-    
-    const hotels = await Hotelmodel.find().populate("admin", "user email");
-    res.status(200).json({
-      message: "Fetched all hotels successfully",
-      hotels
-    });
-  } catch (error) {
-    console.error("Error fetching hotels:", error);
-    res.status(500).json({ err: "Internal server error" });
-  }
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 12;
+      const skip = (page - 1)*limit 
+
+      const hotels = await Hotelmodel.find().skip(skip).limit(limit).populate("admin", "user email");
+      const totalHotels = await Hotelmodel.countDocuments();
+      const totalPages = Math.ceil(totalHotels / limit);
+      console.log(totalHotels)
+      res.status(200).json({
+        message: "Fetched all hotels successfully",
+        hotels,
+        totalPages : totalPages,
+        currentPage : page
+      });
+      console.log(totalPages)
+    } catch (error) {
+      console.error("Error fetching hotels:", error);
+      res.status(500).json({ err: "Internal server error" });
+    }
 };
 
 export const getHotelById = async (req, res) => {

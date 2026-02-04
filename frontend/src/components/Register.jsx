@@ -5,27 +5,15 @@ import Cookies from 'js-cookie'
 function Register() { 
     const navigate = useNavigate()
     const port = "https://hotelbooking-fcz6.onrender.com"
-    // const [state , setState] = useState('Login')
-    const [email , setEmail] = useState('')
-    const [password , setPassword] = useState('')
-    const [firstName , setFirstName] = useState('')
-    const [lastName , setLastName] = useState('')
+    const [form , setForm] = useState({
+        email : "",
+        password : "",
+        firstName : "",
+        lastName : "",
+    })
     const [errorMsg , setErrorMsg] = useState('')
     const [showPass , setShowPass] = useState(false)
     const [click , setClick] = useState(true)
-       
-    const onChangeEmail = (event)=>{
-        setEmail(event.target.value)
-    }
-    const onChangePassword = (e)=>{
-        setPassword(e.target.value)
-    }
-    const onChangeLastName = (e)=>{
-        setLastName(e.target.value)
-    }
-    const onChangeFirstName = (e)=>{
-        setFirstName(e.target.value)
-    }
     const navigateToLogin = ()=>{
         navigate('/login')
     }
@@ -38,48 +26,36 @@ function Register() {
     const payBut =() =>{
         setClick(false)
     }
+    const onChanges = (e) =>{
+        setForm(prev => ({...prev , [e.target.name] : e.target.value }));
+    }
     const onSubmitRegister = async(event) =>{
-        event.preventDefault()
-        
+        event.preventDefault()      
         
     try{
-        const data = {
-        firstName,
-        lastName,
-        email,
-        password
-    }
          let options = {
          method : "POST",
          headers : {
             "Content-Type" : "application/json",
              Accept : "application/json",
         },
-         body : JSON.stringify(data)
+         body : JSON.stringify(form)
     }
      const response = await fetch(`${port}/hotel/register`, options)
      const dataa = await response.json()
-     console.log(dataa)
+    //  console.log(dataa)
      
-     
-
      if(response.ok){
-       
-        // Cookies.set("userId" , dataa.addUser._id)
-        // Cookies.set("email" , dataa.addUser.email)
-        // console.log(userId)
-        alert("Registation successfull!")
+        alert("Registation successful!")
         navigate('/')
-        
     }
     else{
-        // alert(dataa.error)
         setErrorMsg(dataa.error)
     }
-     }
+    }
      catch(e){
            console.log("Registration failed" , e)  
-            alert("Registration failed, Please try again")
+           alert("Registration failed, Please try again")
      }
 }
         
@@ -88,25 +64,24 @@ function Register() {
         <button  className='text-blue-700 text-xl font-semibold px-10 mt-3' onClick={goToHome}>BookYourStay</button>
         <form onSubmit={onSubmitRegister} className="flex flex-col gap-4 max-w-[500px] m-auto mt-2 items-start p-8 py-12 px-8 w-80 sm-w-[352px] text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white">
             <p className="text-2xl font-medium m-auto">
-                <span className="text-indigo-500">User</span> Register 
-                {/* {state === "login" ? "Login" : "Sign Up"} */}
+                <span className="text-indigo-500">User</span> Register
             </p>
             <div className="w-full">
                 <p>First name</p>
-                <input onChange={onChangeFirstName} value={firstName} placeholder="Enter your first name" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="text" required />
+                <input onChange={onChanges} name="firstName" value={form.firstName} placeholder="Enter your first name" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="text" required />
             </div>
             <div className="w-full ">
                 <p>Last Name</p>
-                <input onChange={onChangeLastName} value={lastName} placeholder="Enter your last name" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="text" required />
+                <input onChange={onChanges} name="lastName" value={form.lastName} placeholder="Enter your last name" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="text" required />
             </div>
             <div className="w-full ">
                 <p>Email</p>
-                <input onChange={onChangeEmail} value={email} placeholder="Enter your email" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="email" required />
+                <input onChange={onChanges} name="email" value={form.email} placeholder="Enter your email" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type="email" required />
             </div>
             <div className="w-full ">
                 <p>Password</p>
                 <div className='relative w-full'>
-                <input onChange={onChangePassword} value={password} placeholder="Enter your password" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type={showPass ?"text" : "password"} required />
+                <input onChange={onChanges} name="password" value={form.password} placeholder="Enter your password" className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500" type={showPass ?"text" : "password"} required />
                 {showPass ? 
                 <button onClick={onShowPassword} className='absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black'>
                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">

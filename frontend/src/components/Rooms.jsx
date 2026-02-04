@@ -3,16 +3,21 @@ import { useEffect , useState} from 'react'
 import { Calendar } from 'primereact/calendar';
 import { useNavigate , Link, useParams} from 'react-router-dom';   
 import { ClipLoader } from "react-spinners";
-
+import Pagination from './Pagination';
 
 function Rooms() {
-    const port = "https://hotelbooking-fcz6.onrender.com"
+     const port = "https://hotelbooking-fcz6.onrender.com"
      const navigate = useNavigate()
      const [rooms ,setRooms] = useState([])
      const [search , setSearch] = useState('')
      const [detailRooms , setDetailRooms] = useState('')
      const [loading , setLoading] = useState(false)
-   
+     const [totalPages , setTotalPages] = useState(1)
+     const [currentPage , setCurrentPage] = useState(1)
+     
+     const hotelsPerPage = 12;
+     console.log("totalPages" , totalPages)
+     console.log("currentPage: ", currentPage)
     const onGoHome = () =>{
        navigate('/')
     }
@@ -23,16 +28,19 @@ function Rooms() {
         return eachRoom.name.toLowerCase().includes(search.toLowerCase())
     })
 
-    
+     
 
    function getData(){
       async function fn(){
         try{
             setLoading(true)
-            const data = await fetch(`${port}/hotel/rooms`)
+            const data = await fetch(`${port}/hotel/rooms?page=${currentPage}&limit=${hotelsPerPage}`)
             const response = await data.json()
-            console.log(response)
             setRooms(response.hotels)
+            if(typeof response.totalPages === "number"){
+                setTotalPages(response.totalPages)
+            }
+   
         }
         catch(error){
            console.log(error)
@@ -46,7 +54,7 @@ function Rooms() {
     
 
 
-  useEffect(getData,[])
+  useEffect(getData,[currentPage])
    
   return (
     loading ?  
@@ -121,8 +129,7 @@ function Rooms() {
                       />
                     
                     </div>
-                    
-                    <div className='p-5 flex-1 flex flex-col'>
+                   <div className='p-5 flex-1 flex flex-col'>
                       <h2 className='text-xl font-bold text-gray-800 mb-2 line-clamp-1 group-hover:text-blue-600 transition-colors duration-200'>
                         {each.name}
                       </h2>
@@ -150,6 +157,9 @@ function Rooms() {
             )}
           </div>
         </div>
+        </div>
+        <div className='flex flex-row justify-center m-2'>
+         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage}/>
         </div>
        </>
       )

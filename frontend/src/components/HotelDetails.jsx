@@ -47,7 +47,7 @@ function HotelDetails(props) {
     const [loading , setLoading] = useState(false)
     const [rating, setRating] = useState('')
     const [errorMsg , setErrorMsg] = useState('')
-
+    const [cond , setCond] = useState(false)
     const {id} = useParams()
     const navigate = useNavigate()
     // console.log(id)
@@ -75,10 +75,14 @@ function HotelDetails(props) {
       setRating(e.target.value)
     }
      const onKeyDown = (e) => {
-        if (e.key==="Enter"){
+      if(review =="" && rating ==""){
+         setCond(false) 
+      }
+      setCond(true)
+      if (e.key==="Enter"){
             onAddReviews(e)
         }
-    }
+      }
     const onClickBack = () =>{
         navigate('/rooms')
     }
@@ -114,7 +118,7 @@ function HotelDetails(props) {
          const userId = Cookies.get("userId")
          console.log("userId",userId)
          
-        const response = await fetch(`${port}/hotel/review` , {
+         const response = await fetch(`${port}/hotel/review` , {
           method : "POST",
           headers : {
             "Content-Type" : "application/json",
@@ -139,7 +143,7 @@ function HotelDetails(props) {
             } else {
               console.error("Error adding review:", data.message);
             }
-        };
+    };
      
 
       function fun(){
@@ -195,7 +199,7 @@ function HotelDetails(props) {
             console.log("total price : ",tp) 
            
             if(!data.success){
-         setErrorMsg(data.message)
+              setErrorMsg(data.message)
       }
       
           
@@ -210,8 +214,6 @@ function HotelDetails(props) {
         }
 
       }
-
-      
 
     
   return (
@@ -309,10 +311,11 @@ function HotelDetails(props) {
                    </div>
                    <button 
                      onClick={onAddReviews} 
-                     className='px-6 py-2.5 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all shadow-md hover:shadow-lg transform hover:scale-105 text-sm'
-                   >
+                     className={`px-6 py-2.5 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all shadow-md hover:shadow-lg transform hover:scale-105 text-sm ${cond ? 'cursor-not-allowed' : ''}`}
+                     >
                      Add Review
                    </button> 
+
                  </div>
                </div>
                {/* Reviews List */}
@@ -326,8 +329,8 @@ function HotelDetails(props) {
                          </div>
                          <div className='flex-1'>
                            <div className='flex items-center justify-between mb-1'>
-                             <h3 className='font-semibold text-gray-900'>{each.userId?.firstName || "Anonymous"}</h3>
-                             <div className='flex items-center gap-0.5'>
+                                 <h3 className='font-semibold text-gray-900'>{each.userId?.firstName || "Anonymous"}</h3>
+                                 <div className='flex items-center gap-0.5'>
                                {[...Array(5)].map((_, i) => (
                                  <svg 
                                    key={i} 
@@ -341,7 +344,7 @@ function HotelDetails(props) {
                                ))}
                              </div>
                            </div>
-                           <p className='text-gray-600 leading-relaxed'>{each.review}</p>
+                            <p className='text-gray-600 leading-relaxed'>{each.review}</p>
                          </div>
                        </div>
                      </div>
