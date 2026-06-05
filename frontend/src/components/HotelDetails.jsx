@@ -8,8 +8,6 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { ClipLoader } from 'react-spinners';
 
-
-
 const settings = {
   dots: true,            
   infinite: true,        
@@ -47,13 +45,13 @@ function HotelDetails(props) {
     const [loading , setLoading] = useState(false)
     const [rating, setRating] = useState('')
     const [errorMsg , setErrorMsg] = useState('')
-    const [cond , setCond] = useState(false)
     const {id} = useParams()
     const navigate = useNavigate()
     // console.log(id)
     const [checkIn , setCheckIn] = useState('')
     const [checkOut , setCheckOut] = useState('')
-
+    
+    const isDisabled = review.trim() === "" || rating === "";
     const today = new Date().toISOString().split("T")[0];
     
     const onChangeCheckIn = (e) =>{
@@ -75,14 +73,10 @@ function HotelDetails(props) {
       setRating(e.target.value)
     }
      const onKeyDown = (e) => {
-      if(review =="" && rating ==""){
-         setCond(false) 
+      if (e.key === "Enter" && !isDisabled) {
+        onAddReviews(e);
       }
-      setCond(true)
-      if (e.key==="Enter"){
-            onAddReviews(e)
-        }
-      }
+    };
     const onClickBack = () =>{
         navigate('/rooms')
     }
@@ -110,6 +104,10 @@ function HotelDetails(props) {
 
     const onAddReviews = async(event) => {
         event.preventDefault() 
+
+          if (review.trim() === "" || rating === "") {
+              return;
+          }
 
         const token = Cookies.get("jwtToken")
         
@@ -144,7 +142,38 @@ function HotelDetails(props) {
               console.error("Error adding review:", data.message);
             }
     };
-     
+      const onDeleteReview = async (reviewId) => {
+    const token = Cookies.get("jwtToken");
+
+    if (!token) {
+      alert("Please login first");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${port}/hotel/review/${reviewId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        setReviewList((prev) =>
+          prev.filter((review) => review._id !== reviewId)
+        );
+      } else {
+        alert(data.message);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
       function fun(){
             async function hoteldetails(){
@@ -309,12 +338,18 @@ function HotelDetails(props) {
                        className='w-24 px-3 py-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700' 
                      /> 
                    </div>
-                   <button 
-                     onClick={onAddReviews} 
-                     className={`px-6 py-2.5 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all shadow-md hover:shadow-lg transform hover:scale-105 text-sm ${cond ? 'cursor-not-allowed' : ''}`}
-                     >
-                     Add Review
-                   </button> 
+                   <button
+                    onClick={onAddReviews}
+                    disabled={isDisabled}
+                    className={`px-6 py-2.5 rounded-lg text-white font-semibold transition-all shadow-md text-sm
+                      ${
+                        isDisabled
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : "bg-blue-600 hover:bg-blue-700 hover:shadow-lg hover:scale-105 cursor-pointer"
+                      }`}
+                  >
+                    Add Review
+                  </button>
 
                  </div>
                </div>
