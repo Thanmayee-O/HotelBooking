@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 function Register(props) {
   const navigate = useNavigate()
   const location = useLocation()
-  const port = "http://localhost:3000"
+  const port = "https://hotelbooking-l4ia.onrender.com"
   const [form, setForm] = useState({
     email: "",
     password: "",

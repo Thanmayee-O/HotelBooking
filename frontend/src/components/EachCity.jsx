@@ -16,7 +16,7 @@ const cityImages = {
 }
 
 function EachCity() {
-  const port = "http://localhost:3000"
+  const port = "https://hotelbooking-l4ia.onrender.com"
   const [eachCity, setCity] = useState([])
   const { city } = useParams()
   const navigate = useNavigate()

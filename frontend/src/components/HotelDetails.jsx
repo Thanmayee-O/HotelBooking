@@ -34,7 +34,7 @@ const settings = {
   ]
 };
 function HotelDetails(props) {
-    const port = "http://localhost:3000"
+    const port = "https://hotelbooking-l4ia.onrender.com"
     const {totalPrice, setTotalPrice} = props
     const location = useLocation()
     const {id} = useParams()

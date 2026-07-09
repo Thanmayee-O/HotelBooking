@@ -7,7 +7,7 @@ import Pagination from './Pagination';
 import ScrollReveal from './ScrollReveal';
 
 function Rooms() {
-  const port = "http://localhost:3000"
+  const port = "https://hotelbooking-l4ia.onrender.com"
   const navigate = useNavigate()
   const [rooms, setRooms] = useState([])
   const [search, setSearch] = useState('')

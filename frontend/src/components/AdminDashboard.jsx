@@ -38,7 +38,7 @@ const LoginIcon = () => (
 );
 
 const AdminDashboard = () => {
-  const port = "http://localhost:3000"
+  const port = "https://hotelbooking-l4ia.onrender.com"
   const [activeTab, setActiveTab] = useState("dashboard");
   const [admins, setAdmins] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("adminToken"));
@@ -131,7 +131,7 @@ const AdminDashboard = () => {
                 src={
                   booking.hotelId[0]?.image?.startsWith("http")
                     ? booking.hotelId[0].image
-                    : `http://localhost:3000/${booking.hotelId[0]?.image}`
+                    : `https://hotelbooking-l4ia.onrender.com/${booking.hotelId[0]?.image}`
                 }
                 alt={booking.hotelId[0]?.hotelName}
                 className="w-full h-48 object-cover"
