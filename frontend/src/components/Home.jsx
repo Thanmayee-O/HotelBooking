@@ -4,9 +4,9 @@ import HomeRooms from "./HomeRooms";
 import Login from './Login'
 import BookNow from "./Register";
 import Register from "./Register";
+import ScrollReveal from "./ScrollReveal";
 
 const Home = () =>{
-     
     const [register , setRegister] = useState(false)
     const [login , setLogin] = useState(false)
     
@@ -16,7 +16,7 @@ const Home = () =>{
     }
     const loginFun = () =>{
       setLogin(true)
-      setRegister(false)
+      setRegister(false)  
     }
   return(
     
@@ -42,21 +42,21 @@ const Home = () =>{
       <div className="absolute top-[9%] left-[35%]">
         {login && <Login setLogin={setLogin}/>}
       </div>
-      <div className="flex flex-col md:flex-row items-center justify-center gap-10 max-md:px-4 animate-fadeUp mt-8" id="about">
-        <div className="relative shadow-2xl shadow-indigo-600/40 rounded-2xl overflow-hidden shrink-0">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-10 max-md:px-4 mt-8" id="about">
+        <ScrollReveal delay={0} className="relative shadow-2xl shadow-indigo-600/40 rounded-2xl overflow-hidden shrink-0">
             <img className="max-w-md w-full object-cover rounded-2xl"
                 src="https://i.pinimg.com/736x/42/fc/9a/42fc9a8383520d0c0ef509074c493623.jpg"
                 alt="image" />
-      </div>
+        </ScrollReveal>
 
-        <div className="text-sm text-slate-600 max-w-lg">
+        <ScrollReveal delay={0.15} className="text-sm text-slate-600 max-w-lg">
             <h1 className="text-xl uppercase font-semibold text-slate-700">What we do?</h1>
             <div className="w-24 h-[3px] rounded-full bg-gradient-to-r from-indigo-600 to-[#DDD9FF]"></div>
             <p className="mt-8 text-md"><span className="font-bold text-md">BookYourStay</span> is an innovative hotel booking platform designed to make finding and reserving accommodation simple, fast, and reliable </p>
             <p className="mt-4">With an easy-to-use interface, real-time availability, and secure booking options, BookYourStay ensures a smooth experience for every user. Hotel owners can manage rooms, pricing, and availability effortlessly through the admin dashboard, while guests can explore detailed hotel descriptions, images, and reviews before booking.</p>
             <p className="mt-4">Whether you’re traveling for business or leisure, BookYourStay makes your hotel search smarter, your booking quicker, and your stay more comfortable.</p>
             
-        </div>
+        </ScrollReveal>
     </div>
 
       <HomeRooms/>

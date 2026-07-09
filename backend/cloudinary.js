@@ -15,6 +15,6 @@ const cloudinaryconnection = async()=>{
 console.log({
   CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
   CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
-  CLOUDINARY_SECRET_KEY: process.env.CLOUDINARY_SECRET_KEY ? "✅ Loaded" : "❌ Missing",
+  CLOUDINARY_SECRET_KEY: process.env.CLOUDINARY_SECRET_KEY ? "Loaded" : "Missing",
 });
 export default cloudinaryconnection

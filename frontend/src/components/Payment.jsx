@@ -6,71 +6,71 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 function Payment(props) {
-  const port = "https://hotelbooking-fcz6.onrender.com"
-  const {totalPrice} = props
-  const {bookingid} = useParams()
+  const port = "http://localhost:3000"
+  const { totalPrice } = props
+  const { bookingid } = useParams()
   const navigate = useNavigate()
   const today = new Date().toISOString().split("T")[0];
-  const [cardHolder , setCardHolder] = useState('')
-  const [cardNum , setCardNum] = useState('')
-  const [expiryDate , setExpiryDate] = useState(today)
+  const [cardHolder, setCardHolder] = useState('')
+  const [cardNum, setCardNum] = useState('')
+  const [expiryDate, setExpiryDate] = useState(today)
   const [click, setClick] = useState(true)
   // const [cvv , setCvv] = useState('')
-  
-    
-  
-      const onChangeCardHolder = (e) => {
-        setCardHolder(e.target.value)
-      }
-      const onChangeCardNum = (e) => {
-        setCardNum(e.target.value)
-      }
-      const onChangeExpiryDate = (e) => {
-        setExpiryDate(e.target.value)
-      }
-      function payBut(){
-          setClick(false)
-      }
-      const onSubmitPayment = async(e) => {
-          e.preventDefault()
-          if(!cardNum || !cardHolder){
-              alert("Enter valid details")
-              return 
-          }
-          const token = Cookies.get("jwtToken"); // if you require auth
-          const email = Cookies.get("email")
-            
-          const date = new Date().toISOString();
-    
-          const payload = { bookingId : bookingid, date, cardNum ,amount:totalPrice , cardHolderName : cardHolder, cardExpMonth: new Date(expiryDate).getMonth() + 1,cardExpYear: new Date(expiryDate).getFullYear()};
-          
-          const response = await fetch(`${port}/hotel/payment`, {
-            method : "POST",
-            headers : {
-              "Content-Type" : "application/json",
-                Accept : "application/json",
-                Authorization : `Bearer ${token}`
-            },
-            body : JSON.stringify(payload)
-          })
-          const data = await response.json()
-          console.log(data)
-          //  navigate('/success')
-          try {
-            // if(data.emailSent){
-            //     alert("Payment successful! Confirmation email sent.")
-            //     }
-            // else{
-            //     alert("Payment successful, but email could not be sent.");
-            // }
-            navigate('/success')
-            } catch (error) {
-                `Error: ${data.message || "Something went wrong"}`;
-            }
-            console.log("Total Price in Payment page:", totalPrice);
 
-            }
-        
+
+
+  const onChangeCardHolder = (e) => {
+    setCardHolder(e.target.value)
+  }
+  const onChangeCardNum = (e) => {
+    setCardNum(e.target.value)
+  }
+  const onChangeExpiryDate = (e) => {
+    setExpiryDate(e.target.value)
+  }
+  function payBut() {
+    setClick(false)
+  }
+  const onSubmitPayment = async (e) => {
+    e.preventDefault()
+    if (!cardNum || !cardHolder) {
+      alert("Enter valid details")
+      return
+    }
+    const token = Cookies.get("jwtToken"); // if you require auth
+    const email = Cookies.get("email")
+
+    const date = new Date().toISOString();
+
+    const payload = { bookingId: bookingid, date, cardNum, amount: totalPrice, cardHolderName: cardHolder, cardExpMonth: new Date(expiryDate).getMonth() + 1, cardExpYear: new Date(expiryDate).getFullYear() };
+
+    const response = await fetch(`${port}/hotel/payment`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    })
+    const data = await response.json()
+    console.log(data)
+    //  navigate('/success')
+    try {
+      // if(data.emailSent){
+      //     alert("Payment successful! Confirmation email sent.")
+      //     }
+      // else{
+      //     alert("Payment successful, but email could not be sent.");
+      // }
+      navigate('/success')
+    } catch (error) {
+      `Error: ${data.message || "Something went wrong"}`;
+    }
+    console.log("Total Price in Payment page:", totalPrice);
+
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
@@ -95,7 +95,7 @@ function Payment(props) {
             <input
               type="password"
               value={cardNum}
-              maxLength = "4"
+              maxLength="4"
               onChange={onChangeCardNum}
               placeholder="Enter the last four digits"
               className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
@@ -121,11 +121,11 @@ function Payment(props) {
           </div>
 
           <button
-              type="submit" onClick = {payBut}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-              {click ? "Pay Now" : "Proccessing....."}
+            type="submit" onClick={payBut}
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+            {click ? "Pay Now" : "Proccessing....."}
           </button>
-           
+
         </form>
       </div>
     </div>

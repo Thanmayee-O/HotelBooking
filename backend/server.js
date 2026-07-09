@@ -17,10 +17,7 @@ import roomsroute from './route/roomsroute.js'
 
 const app = express()
 
- 
 dotenv.config()
-
-
 
 app.use(express.json())
 app.use(bodyParser.json())
@@ -59,3 +56,4 @@ app.use('/hotel' , reviewroute)
 app.use('/hotel' , paymentRoute)
 app.use('/hotels' , viewbookings)
 app.use('/adminroute' ,roomsroute)
+app.use('/hotel' , reviewroute)

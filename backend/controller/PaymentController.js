@@ -71,13 +71,13 @@ export const PaymentController = async(req , res)=>{
 
           let emailSent = false;
 
-          try {
-            await transporter.sendMail(mailOptions);
-            emailSent = true;
-            console.log("Email sent successfully to:", user.email);
-          } catch (error) {
-            console.log("Email sending failed:", error.message);
-          }
+          // try {
+          //   await transporter.sendMail(mailOptions);
+          //   emailSent = true;
+          //   console.log("Email sent successfully to:", user.email);
+          // } catch (error) {
+          //   console.log("Email sending failed:", error.message);
+          // }
           return res.status(201).json({success: true,message: "Payment done successfully",emailSent,transactionId: payment._id,payment});
         }
    

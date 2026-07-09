@@ -61,7 +61,17 @@ export const deleteById = async(req,res)=>{
       res.status(404).json({success:false , message : "id not found"})
     }
     const deleteReview = await Review.findByIdAndDelete(id);
-    res.status(200).json({success : true , message : "review deleted successfully" , deleteReview})
+     if (!deleteReview) {
+      return res.status(404).json({
+        success: false,
+        message: "Review not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Review deleted successfully",
+    });
 
     
   } catch (error) {
